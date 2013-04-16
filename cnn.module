@@ -58,7 +58,7 @@ function cnn_tweets(){
 	$json_string = file_get_contents("http://api.twitter.com/1/statuses/user_timeline/cnnbrk.json?include_entities=true&include_rts=true&count=10", true); 
 	$json = json_decode($json_string, true); 
 
-	//$result .= dprint_r($json);
+	$result .= dprint_r($json);
 	
 	//get every tweet and theme it 
 	foreach($json as $tweet){
@@ -70,11 +70,11 @@ function cnn_tweets(){
 		$RT = '';
 		$time = $tweet['created_at'];	
 		$time_ago = date("i", (time() - strtotime($time))).'m';
-		//$result .= $time_ago;
-		
+
 		//we want the original tweeter's info if this is a retweet
 		if(isset($tweet['retweeted_status'])){
 			$title = $tweet['retweeted_status']['user']['name'];
+			$status = $tweet['retweeted_status']['text'];
 			$RT = 'Retweeted by: <a href="https://twitter.com/'.$screen_name.'">'.$name.'</a>';
 			$picture = $tweet['retweeted_status']['user']['profile_image_url'];
 			$screen_name = $tweet['retweeted_status']['user']['screen_name'];	
@@ -95,6 +95,23 @@ function cnn_tweets(){
 			$linked_hashtag = '<a href="https://twitter.com/search?q=%23'.$hash['text'].'&src=hash">#'.$hash['text'].'</a> ';
 			$status = str_replace('#'.$hash['text'], $linked_hashtag, $status);
 		}
+		
+		if(isset($tweet['retweeted_status'])){
+					//convert all urls to linked urls in status string
+			foreach($tweet['retweeted_status']['entities']['urls'] as $url){
+					$linked_url = '<a href="'.$url['url'].'" >'.$url['display_url'].'</a> ';
+					$status = str_replace($url['url'], $linked_url, $status);
+			}
+
+			//do the same for hashtags
+			foreach($tweet['retweeted_status']['entities']['hashtags'] as $hash){
+				$linked_hashtag = '<a href="https://twitter.com/search?q=%23'.$hash['text'].'&src=hash">#'.$hash['text'].'</a> ';
+				$status = str_replace('#'.$hash['text'], $linked_hashtag, $status);
+			}
+		
+		}
+		
+		
 			
 		//theme the tweet	
 		$result .= theme('tweet', $picture, $title, $status, $screen_name, $RT, $time_ago);
