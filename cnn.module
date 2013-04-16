@@ -42,7 +42,8 @@ function cnn_perm() {
 
 /**Implementation of hook_init**/
 function cnn_init(){
-	//drupal_goto('cnnbrk-tweets');
+	//Make our front page the tweets page
+	variable_set('site_frontpage', 'cnnbrk-tweets');
 }
 
 /**The main tweet function that returns the markup to the active template.
@@ -56,7 +57,7 @@ function cnn_tweets(){
 	$json_string = file_get_contents("http://api.twitter.com/1/statuses/user_timeline/cnnbrk.json?include_entities=true&include_rts=true&count=10", true); 
 	$json = json_decode($json_string, true); 
 
-	//$result .= dprint_r($json);
+	//debug: $result .= dprint_r($json);
 	
 	//get every tweet and theme it 
 	foreach($json as $tweet){
