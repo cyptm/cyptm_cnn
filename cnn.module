@@ -63,8 +63,8 @@ function cnn_tweets(){
 	//get every tweet and theme it 
 	foreach($json as $tweet){
 	
-		$name = $tweet['user']['screen_name'];
-		$screen_name = $tweet['user']['name'];
+		$name = $tweet['user']['name'];
+		$screen_name = $tweet['user']['screen_name'];
 		$title = $tweet['user']['name'];
 		$status = $tweet['text'];	
 		$RT = '';
@@ -74,12 +74,12 @@ function cnn_tweets(){
 		
 		//we want the original tweeter's info if this is a retweet
 		if(isset($tweet['retweeted_status'])){
-			$RT = 'Retweeted by: <a href="https://twitter.com/'.$name.'">'.$screen_name.'</a>';
+			$RT = 'Retweeted by: <a href="https://twitter.com/'.$screen_name.'">'.$name.'</a>';
 			$picture = $tweet['retweeted_status']['user']['profile_image_url'];
-			$screen_name = $tweet['retweeted_status']['user']['name'];	
+			$screen_name = $tweet['retweeted_status']['user']['screen_name'];	
 		}
 		else{
-			$screen_name = $tweet['user']['name'];
+			$screen_name = $tweet['user']['screen_name'];
 			$picture = $tweet['user']['profile_image_url'];
 		}	
 		
