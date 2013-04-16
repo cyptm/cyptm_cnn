@@ -1,6 +1,6 @@
 @media screen and (min-width: 600px) {
 .tweet-container{padding: 10px; width: 640px; overflow: hidden;}
-.tweet-wrapper{float: left; width: 300px;  padding: 10px; border-top: 1px solid #ddd;  height: 160px;}
+.tweet-wrapper{float: left; width: 300px;  padding: 10px; border-top: 1px solid #ddd;  height: 140px;}
 }
 
 @media screen and (max-width: 600px) {
@@ -12,6 +12,8 @@
 .tweet-container{padding: 10px; width: 480px; overflow: hidden; }
 .tweet-wrapper{float: left; width: 96%;  padding: 10px; border-top: 1px solid #ddd;  height: auto;}
 }
+
+.tweet-container{font-size: 12px; font-family: arial, sans-serif;}
 
 .tweet-picture{ height: 100px; width: 20%; float: left;}
 .tweet-picture img{-webkit-border-radius: 7px; border-radius: 7px; }
