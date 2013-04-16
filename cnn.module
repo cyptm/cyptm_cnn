@@ -42,7 +42,7 @@ function cnn_perm() {
 
 /**Implementation of hook_init**/
 function cnn_init(){
-	//Make our front page the tweets page
+	//Make our front page the tweet page 
 	variable_set('site_frontpage', 'cnnbrk-tweets');
 }
 
