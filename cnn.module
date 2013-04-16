@@ -6,8 +6,8 @@ function cnn_menu() {
 	$items['cnnbrk-tweets'] = array(
     'title' => 'CNN Tweets',
     'page callback' => 'cnn_tweets',
-	'access callback' => 'user_access',
-	 'access arguments' => array('access cnn tweets'),
+	'access callback' => true,
+	 //'access arguments' => array('access cnn tweets'),
   );  
   return $items;
 }
@@ -42,8 +42,10 @@ function cnn_perm() {
 
 /**Implementation of hook_init**/
 function cnn_init(){
-	//Make our front page the tweet page 
-	variable_set('site_frontpage', 'cnnbrk-tweets');
+	//Make our front page the tweet page, user must be logged in first
+		global $user;
+	if($user->uid)
+		variable_set('site_frontpage', 'cnnbrk-tweets');
 }
 
 /**The main tweet function that returns the markup to the active template.
