@@ -23,6 +23,7 @@ function cnn_theme(){
 				'status'=>NULL, 
 				'screen_name'=>NULL, 
 				'RT'=> NULL,
+				'time_ago'=> NULL,
 				),
 			'template'=> 'templates/tweet',
 		),
@@ -57,7 +58,7 @@ function cnn_tweets(){
 	$json_string = file_get_contents("http://api.twitter.com/1/statuses/user_timeline/cnnbrk.json?include_entities=true&include_rts=true&count=10", true); 
 	$json = json_decode($json_string, true); 
 
-	//debug: $result .= dprint_r($json);
+	//$result .= dprint_r($json);
 	
 	//get every tweet and theme it 
 	foreach($json as $tweet){
@@ -66,7 +67,10 @@ function cnn_tweets(){
 		$screen_name = $tweet['user']['name'];
 		$title = $tweet['user']['name'];
 		$status = $tweet['text'];	
-		$RT = '';		
+		$RT = '';
+		$time = $tweet['created_at'];	
+		$time_ago = date("i", (time() - strtotime($time))).'minutes ago';
+		//$result .= $time_ago;
 		
 		//we want the original tweeter's info if this is a retweet
 		if(isset($tweet['retweeted_status'])){
@@ -92,7 +96,7 @@ function cnn_tweets(){
 		}
 			
 		//theme the tweet	
-		$result .= theme('tweet', $picture, $title, $status, $screen_name, $RT);
+		$result .= theme('tweet', $picture, $title, $status, $screen_name, $RT, $time_ago);
 		//break;
 	}
 	
