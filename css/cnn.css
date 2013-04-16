@@ -26,4 +26,5 @@
 .tweet-content .faded-text a{color: #777;}
 .tweet-content .faded-text a:hover{color: #777;}
 .tweet-content .time-ago{float: right;}
-.tweet-content .title a{color: #444444;}
+.tweet-content .title a{color: #444444;} 
+.tweet-content .title a:hover{color: #027AC6;}
