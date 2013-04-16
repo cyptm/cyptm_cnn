@@ -69,7 +69,7 @@ function cnn_tweets(){
 		$status = $tweet['text'];	
 		$RT = '';
 		$time = $tweet['created_at'];	
-		$time_ago = date("i", (time() - strtotime($time))).'minutes ago';
+		$time_ago = date("i", (time() - strtotime($time))).'m';
 		//$result .= $time_ago;
 		
 		//we want the original tweeter's info if this is a retweet
