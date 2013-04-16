@@ -1,0 +1,101 @@
+<?php  
+
+
+/***Implementation of hook menu***/
+function cnn_menu() {
+	$items['cnnbrk-tweets'] = array(
+    'title' => 'CNN Tweets',
+    'page callback' => 'cnn_tweets',
+	'access callback' => 'user_access',
+	 'access arguments' => array('access cnn tweets'),
+  );  
+  return $items;
+}
+
+
+/**implementation of hook_theme**/
+function cnn_theme(){
+	return array(
+		'tweet' => array(
+			'arguments'=> array(
+				'picture'=>NULL, 
+				'title'=>NULL, 
+				'status'=>NULL, 
+				'screen_name'=>NULL, 
+				'RT'=> NULL,
+				),
+			'template'=> 'templates/tweet',
+		),
+		'tweet_container' => array(
+			'arguments'=>array(
+				'content'=>NULL,
+			),
+			'template'=>'templates/tweet_container',
+		),	
+	);
+}
+
+/***Implementation of hook_perm***/
+function cnn_perm() {
+  return array('access cnn tweets');
+}
+
+/**Implementation of hook_init**/
+function cnn_init(){
+	//drupal_goto('cnnbrk-tweets');
+}
+
+/**The main tweet function that returns the markup to the active template.
+The markup is themed by CNN's theme implementation***/
+function cnn_tweets(){
+	//add css before rendering the page
+	drupal_add_css(drupal_get_path('module', 'cnn') .'/css/cnn.css', 'module', 'all', 'true');
+	
+	$result = '';
+	//query twitter as api for json data
+	$json_string = file_get_contents("http://api.twitter.com/1/statuses/user_timeline/cnnbrk.json?include_entities=true&include_rts=true&count=10", true); 
+	$json = json_decode($json_string, true); 
+
+	//$result .= dprint_r($json);
+	
+	//get every tweet and theme it 
+	foreach($json as $tweet){
+	
+		$name = $tweet['user']['screen_name'];
+		$screen_name = $tweet['user']['name'];
+		$title = $tweet['user']['name'];
+		$status = $tweet['text'];	
+		$RT = '';		
+		
+		//we want the original tweeter's info if this is a retweet
+		if(isset($tweet['retweeted_status'])){
+			$RT = 'Retweeted by: <a href="https://twitter.com/'.$name.'">'.$screen_name.'</a>';
+			$picture = $tweet['retweeted_status']['user']['profile_image_url'];
+			$screen_name = $tweet['retweeted_status']['user']['name'];	
+		}
+		else{
+			$screen_name = $tweet['user']['name'];
+			$picture = $tweet['user']['profile_image_url'];
+		}	
+		
+		//convert all urls to linked urls in status string
+		foreach($tweet['entities']['urls'] as $url){
+				$linked_url = '<a href="'.$url['url'].'" >'.$url['display_url'].'</a> ';
+				$status = str_replace($url['url'], $linked_url, $status);
+		}
+
+		//do the same for hashtags
+		foreach($tweet['entities']['hashtags'] as $hash){
+			$linked_hashtag = '<a href="https://twitter.com/search?q=%23'.$hash['text'].'&src=hash">#'.$hash['text'].'</a> ';
+			$status = str_replace('#'.$hash['text'], $linked_hashtag, $status);
+		}
+			
+		//theme the tweet	
+		$result .= theme('tweet', $picture, $title, $status, $screen_name, $RT);
+		//break;
+	}
+	
+	//return the entire tweet collection to the active theme
+	return theme('tweet_container', $result);
+}
+

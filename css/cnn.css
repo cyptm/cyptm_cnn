@@ -1,0 +1,24 @@
+@media screen and (min-width: 600px) {
+.tweet-container{padding: 10px; min-width: 840px; overflow: hidden;}
+}
+
+@media screen and (max-width: 600px) {
+
+  @-ms-viewport {
+    width: 600px;
+}
+
+.tweet-container{padding: 10px; width: 420px; overflow: hidden;}
+}
+
+.tweet-wrapper{float: left; width: 400px;  padding: 10px; border-top: 1px solid #ddd;  height: 100px;}
+.tweet-picture{ height: 100px; width: 15%; float: left;}
+.tweet-picture img{-webkit-border-radius: 7px; border-radius: 7px; }
+.tweet-content{height: auto; float: left; width: 85%}
+.tweet-wrapper:hover{background-color: #eee;}
+
+.tweet-content h2{display: inline;}
+.tweet-content .screen-name{display: inline;}
+.tweet-content .faded-text{color: #777;}
+.tweet-content .faded-text a{color: #777;}
+.tweet-content .faded-text a:hover{color: #777;}

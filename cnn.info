@@ -1,0 +1,4 @@
+; $Id$  
+name = CNN 
+description = CNN custom module.  
+core = 6.x  
