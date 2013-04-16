@@ -74,6 +74,7 @@ function cnn_tweets(){
 		
 		//we want the original tweeter's info if this is a retweet
 		if(isset($tweet['retweeted_status'])){
+			$title = $tweet['retweeted_status']['user']['name'];
 			$RT = 'Retweeted by: <a href="https://twitter.com/'.$screen_name.'">'.$name.'</a>';
 			$picture = $tweet['retweeted_status']['user']['profile_image_url'];
 			$screen_name = $tweet['retweeted_status']['user']['screen_name'];	
